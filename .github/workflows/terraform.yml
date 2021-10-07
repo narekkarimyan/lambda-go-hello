@@ -9,7 +9,6 @@ jobs:
   deploy_lambda:
     runs-on: ubuntu-latest
     steps:
-      steps:
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -19,7 +18,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-          
+
       - name: deploy
         run: |
           GOOS=linux go build main.go
