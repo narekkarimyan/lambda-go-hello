@@ -19,8 +19,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: deploy
-        run: |
-          GOOS=linux go build main.go
-          zip -j deploy.zip main
-          aws lambda update-function-code --function-name=showHelloPapa --zip-file=fileb://deploy.zip
+      - name: Compile
+        id: compiler
+        run: GOOS=linux go build main.go
+
+      - name: Compress executables
+        id: compresser
+        run: zip -j deploy.zip main
+
+      - name: Deploy
+        id: aws-deploy
+        run: aws lambda update-function-code --function-name=showHelloPapa --zip-file=fileb://deploy.zip
+                  
