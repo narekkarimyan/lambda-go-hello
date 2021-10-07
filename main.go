@@ -2,13 +2,30 @@ package main
 
 import (
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-lambda-go/events"
+	"encoding/json"
+	"net/http"
 )
 
-func hello() (string, error) {
-	return "Здорова, отец!", nil
+func hello(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
+	type BodyMessage struct {
+		Message string
+	}
+	response := BodyMessage{
+		Message: "Здорово!",
+	}
+	return apiResponse(http.StatusOK, response)
 }
 
 func main() {
-	// Make the handler available for Remote Procedure Call by AWS Lambda
 	lambda.Start(hello)
+}
+
+func apiResponse(status int, body interface{}) (*events.APIGatewayProxyResponse, error) {
+	resp := events.APIGatewayProxyResponse{Headers: map[string]string{"Content-Type": "application/json"}}
+	resp.StatusCode = status
+	
+	stringBody, _ := json.Marshal(body)
+	resp.Body = string(stringBody)
+	return &resp, nil
 }
