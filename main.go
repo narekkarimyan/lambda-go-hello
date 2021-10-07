@@ -12,7 +12,7 @@ func hello(req events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, 
 		Message string
 	}
 	response := BodyMessage{
-		Message: "Здорово!",
+		Message: "Здорово, отец!",
 	}
 	return apiResponse(http.StatusOK, response)
 }
